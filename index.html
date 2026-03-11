@@ -28,6 +28,7 @@
                     <a href="#home" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">Home</a>
                     <a href="#about" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">About Us</a>
                     <a href="#museum" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">The Museum</a>
+                    <a href="#gallery" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">Virtual Museum</a>
                     <a href="#contact" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">Contact</a>
                 </div>
                 <!-- Mobile menu button -->
@@ -46,6 +47,7 @@
                 <a href="#home" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">Home</a>
                 <a href="#about" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">About Us</a>
                 <a href="#museum" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">The Museum</a>
+                <a href="#gallery" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">Virtual Museum</a>
                 <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">Contact</a>
             </div>
         </div>
@@ -119,8 +121,23 @@
         </div>
     </section>
 
+    <!-- Virtual Museum / Gallery Section -->
+    <section id="gallery" class="py-20 bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold text-amber-900 mb-6">Virtual Museum</h2>
+                <p class="text-lg text-gray-600">Explore our digital collection of historical photographs, documents, and artifacts from the comfort of your home. Click on any image to view it in more detail.</p>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" id="gallery-grid">
+                <!-- Javascript will populate this grid -->
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
+    <section id="contact" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="lg:flex lg:space-x-16">
                 <div class="lg:w-1/3 mb-10 lg:mb-0">
@@ -146,7 +163,7 @@
                 </div>
 
                 <div class="lg:w-2/3">
-                    <form class="bg-gray-50 p-8 rounded-xl shadow-sm border border-gray-100">
+                    <form class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
@@ -181,10 +198,11 @@
                 <span class="text-xl font-bold text-amber-500">Waller County Historical Society</span>
                 <p class="text-gray-400 text-sm mt-2">Preserving our past for the future.</p>
             </div>
-            <div class="flex space-x-6">
-                <a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a>
+            <div class="flex flex-wrap space-x-6 gap-y-2 mt-4 md:mt-0">
+                <a href="#home" class="text-gray-400 hover:text-white transition-colors ml-6 md:ml-0">Home</a>
                 <a href="#about" class="text-gray-400 hover:text-white transition-colors">About</a>
                 <a href="#museum" class="text-gray-400 hover:text-white transition-colors">Museum</a>
+                <a href="#gallery" class="text-gray-400 hover:text-white transition-colors">Gallery</a>
                 <a href="#contact" class="text-gray-400 hover:text-white transition-colors">Contact</a>
             </div>
         </div>
@@ -193,5 +211,104 @@
         </div>
     </footer>
 
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-50 hidden bg-black bg-opacity-90 flex items-center justify-center backdrop-blur-sm transition-opacity duration-300">
+        <!-- Close button -->
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white hover:text-amber-500 focus:outline-none transition-colors z-50" aria-label="Close lightbox">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <!-- Previous button -->
+        <button onclick="changeImage(-1)" class="absolute left-2 md:left-6 text-white hover:text-amber-500 focus:outline-none transition-colors z-50" aria-label="Previous image">
+            <svg class="w-10 h-10 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+
+        <!-- Image and Caption Container -->
+        <div class="max-w-5xl w-full px-12 md:px-24 flex flex-col items-center relative h-full justify-center z-50" id="lightbox-content">
+            <img id="lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Gallery Image" class="max-h-[75vh] max-w-full object-contain shadow-2xl z-50">
+            <div class="absolute bottom-10 md:bottom-20 left-0 w-full text-center px-4 z-50">
+                <p id="lightbox-caption" class="text-white text-lg md:text-xl font-light drop-shadow-md bg-black bg-opacity-50 inline-block px-4 py-2 rounded-lg"></p>
+            </div>
+        </div>
+
+        <!-- Next button -->
+        <button onclick="changeImage(1)" class="absolute right-2 md:right-6 text-white hover:text-amber-500 focus:outline-none transition-colors z-50" aria-label="Next image">
+            <svg class="w-10 h-10 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+    </div>
+
+    <!-- Gallery Script -->
+    <script>
+        const galleryData = [
+            { src: 'https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=600&q=80', caption: 'Historic Courthouse Architecture' },
+            { src: 'https://images.unsplash.com/photo-1552554224-11885ccabfb6?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1552554224-11885ccabfb6?w=600&q=80', caption: 'Vintage Town Archives' },
+            { src: 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=600&q=80', caption: 'Early Settler Homesteads' },
+            { src: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=600&q=80', caption: 'Historical Documents & Letters' },
+            { src: 'https://images.unsplash.com/photo-1533158326339-7f3cf2404354?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1533158326339-7f3cf2404354?w=600&q=80', caption: 'Antique Tools and Artifacts' },
+            { src: 'https://images.unsplash.com/photo-1505664155135-2d4e843c0597?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1505664155135-2d4e843c0597?w=600&q=80', caption: '19th Century Pocket Watches' }
+        ];
+
+        let currentImageIndex = 0;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+
+        // Render gallery
+        const galleryGrid = document.getElementById('gallery-grid');
+        if (galleryGrid) {
+            galleryData.forEach((item, index) => {
+                const itemHTML = `
+                    <div class="group relative cursor-pointer overflow-hidden rounded-xl shadow-md gallery-item bg-gray-200 aspect-[4/3]" onclick="openLightbox(${index})" tabindex="0" role="button" aria-label="View ${item.caption}">
+                        <img src="${item.thumb}" alt="${item.caption}" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-300 flex items-end p-4">
+                            <span class="text-white opacity-0 group-hover:opacity-100 font-medium text-lg transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">${item.caption}</span>
+                        </div>
+                    </div>
+                `;
+                galleryGrid.innerHTML += itemHTML;
+            });
+        }
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightbox();
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            lightbox.focus();
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex >= galleryData.length) currentImageIndex = 0;
+            if (currentImageIndex < 0) currentImageIndex = galleryData.length - 1;
+            updateLightbox();
+        }
+
+        function updateLightbox() {
+            lightboxImg.src = galleryData[currentImageIndex].src;
+            lightboxCaption.textContent = galleryData[currentImageIndex].caption;
+        }
+
+        // Close lightbox on clicking outside the image or buttons
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox || e.target.id === 'lightbox-content') {
+                closeLightbox();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (lightbox.classList.contains('hidden')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') changeImage(1);
+            if (e.key === 'ArrowLeft') changeImage(-1);
+        });
+    </script>
 </body>
 </html>
