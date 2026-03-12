@@ -21,10 +21,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
                 <div class="flex items-center">
-                    <a href="index.html" class="text-2xl font-bold text-amber-900">Waller County Historical Society</a>
+                    <a href="/" class="text-2xl font-bold text-amber-900">Waller County Historical Society</a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">Home</a>
+                    <a href="/" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">Home</a>
                     <a href="about.html" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">About Us</a>
                     <a href="museum.html" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">The Museum</a>
                     <a href="gallery.html" class="text-gray-600 hover:text-amber-900 font-medium transition-colors">Virtual Museum</a>
@@ -43,7 +43,7 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="index.html" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">Home</a>
+                <a href="/" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">Home</a>
                 <a href="about.html" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">About Us</a>
                 <a href="museum.html" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">The Museum</a>
                 <a href="gallery.html" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-amber-900 hover:bg-gray-50">Virtual Museum</a>
@@ -63,6 +63,16 @@
 
             <!-- Gallery Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" id="gallery-grid">
+{% for img in images %}
+<div class="group relative cursor-pointer overflow-hidden rounded-xl shadow-md gallery-item bg-gray-200 aspect-[4/3]" onclick="openLightbox({{ loop.index0 }})" tabindex="0" role="button" aria-label="View {{ img.title }}">
+    <img src="/static/images/gallery/{{ img.filename }}" alt="{{ img.title }}" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-300 flex items-end p-4">
+        <span class="text-white opacity-0 group-hover:opacity-100 font-medium text-lg transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">{{ img.title }}</span>
+    </div>
+</div>
+{% else %}
+<p class="text-gray-500 col-span-3 text-center py-8">No images available in the gallery.</p>
+{% endfor %}
                 <!-- Javascript will populate this grid -->
             </div>
         </div>
@@ -76,7 +86,7 @@
                 <p class="text-gray-400 text-sm mt-2">Preserving our past for the future.</p>
             </div>
             <div class="flex flex-wrap space-x-6 gap-y-2 mt-4 md:mt-0">
-                <a href="index.html" class="text-gray-400 hover:text-white transition-colors ml-6 md:ml-0">Home</a>
+                <a href="/" class="text-gray-400 hover:text-white transition-colors ml-6 md:ml-0">Home</a>
                 <a href="about.html" class="text-gray-400 hover:text-white transition-colors">About</a>
                 <a href="museum.html" class="text-gray-400 hover:text-white transition-colors">Museum</a>
                 <a href="gallery.html" class="text-gray-400 hover:text-white transition-colors">Gallery</a>
@@ -116,35 +126,21 @@
 
     <!-- Gallery Script -->
     <script>
-        const galleryData = [
-            { src: 'https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=600&q=80', caption: 'Historic Courthouse Architecture' },
-            { src: 'https://images.unsplash.com/photo-1552554224-11885ccabfb6?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1552554224-11885ccabfb6?w=600&q=80', caption: 'Vintage Town Archives' },
-            { src: 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=600&q=80', caption: 'Early Settler Homesteads' },
-            { src: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=600&q=80', caption: 'Historical Documents & Letters' },
-            { src: 'https://images.unsplash.com/photo-1533158326339-7f3cf2404354?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1533158326339-7f3cf2404354?w=600&q=80', caption: 'Antique Tools and Artifacts' },
-            { src: 'https://images.unsplash.com/photo-1505664155135-2d4e843c0597?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1505664155135-2d4e843c0597?w=600&q=80', caption: '19th Century Pocket Watches' }
-        ];
+
 
         let currentImageIndex = 0;
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxCaption = document.getElementById('lightbox-caption');
 
-        // Render gallery
-        const galleryGrid = document.getElementById('gallery-grid');
-        if (galleryGrid) {
-            galleryData.forEach((item, index) => {
-                const itemHTML = `
-                    <div class="group relative cursor-pointer overflow-hidden rounded-xl shadow-md gallery-item bg-gray-200 aspect-[4/3]" onclick="openLightbox(${index})" tabindex="0" role="button" aria-label="View ${item.caption}">
-                        <img src="${item.thumb}" alt="${item.caption}" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-300 flex items-end p-4">
-                            <span class="text-white opacity-0 group-hover:opacity-100 font-medium text-lg transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">${item.caption}</span>
-                        </div>
-                    </div>
-                `;
-                galleryGrid.innerHTML += itemHTML;
-            });
-        }
+        // Render gallery managed by Jinja backend now
+        // Initialize dynamic data from DOM
+        const galleryItems = document.querySelectorAll('.gallery-item img');
+        const dynamicGalleryData = Array.from(galleryItems).map(img => ({
+            src: img.src,
+            caption: img.alt
+        }));
+
 
         function openLightbox(index) {
             currentImageIndex = index;
@@ -161,14 +157,14 @@
 
         function changeImage(direction) {
             currentImageIndex += direction;
-            if (currentImageIndex >= galleryData.length) currentImageIndex = 0;
-            if (currentImageIndex < 0) currentImageIndex = galleryData.length - 1;
+            if (currentImageIndex >= dynamicGalleryData.length) currentImageIndex = 0;
+            if (currentImageIndex < 0) currentImageIndex = dynamicGalleryData.length - 1;
             updateLightbox();
         }
 
         function updateLightbox() {
-            lightboxImg.src = galleryData[currentImageIndex].src;
-            lightboxCaption.textContent = galleryData[currentImageIndex].caption;
+            lightboxImg.src = dynamicGalleryData[currentImageIndex].src;
+            lightboxCaption.textContent = dynamicGalleryData[currentImageIndex].caption;
         }
 
         // Close lightbox on clicking outside the image or buttons
